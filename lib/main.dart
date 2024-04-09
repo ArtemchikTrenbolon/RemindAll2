@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget{
       home: Scaffold(
         appBar: AppBar(
           title: const Text('RemindAll'),
-          backgroundColor:Colors.blue,
+          backgroundColor:Colors.green,
         ),
         body: Center(
           //child: Icon(Icons.settings, size: 45, color: Colors.blue),
