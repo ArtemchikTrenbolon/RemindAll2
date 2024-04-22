@@ -1,43 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app3/pages/first_page.dart';
+import 'package:flutter_app3/pages/home_page.dart';
+import 'package:flutter_app3/pages/profile_page.dart';
+import 'package:flutter_app3/pages/second_page.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return MaterialApp(
-      theme: ThemeData(primaryColor: Colors.blue[400]),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('RemindAll'),
-          backgroundColor:Colors.green,
-        ),
-        body: Center(
-          //child: Icon(Icons.settings, size: 45, color: Colors.blue),
-
-          //TextButton.icon(onPressed: () {},
-          //label: const Text('wqef'),icon: const Icon(Icons.adb_sharp),) ,
-
-          // TextButton.icon(
-          //     onPressed: () {},
-          //     icon: Icon(Icons.adb_sharp),
-          //     label: Text('settings'))
-          // child:TextButton(
-          //    onPressed: () {},
-          //     child: Text('fewf'),
-          //    style: ButtonStyle(
-          //        backgroundColor: MaterialStateProperty.all(Colors.blue)),),
-        ),
-        floatingActionButton: FloatingActionButton(
-          child: Text('+'),
-          backgroundColor: Colors.blue,
-          onPressed: () {
-            print('click');
-          },
-        ),
-      ),
-    );
+      debugShowCheckedModeBanner: false,
+      home: FirstPage(),
+      routes: {
+        '/firstpage': (context) => FirstPage(),
+        '/homepage': (context) => HomePage(),
+        '/settingspage': (context) => SettingPage(),
+        '/profilepage': (context) => ProfilePage(),
+      },
+        );
   }
 }
+
 
 
