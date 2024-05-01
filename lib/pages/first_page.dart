@@ -113,33 +113,41 @@ void updateNote(Note note) {
     List<Note> currentNotes =  noteDatabase.currentNotes;
 
     return Scaffold(
-      appBar: AppBar(title: Text("RemindAll")),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: createNote,
         child: const Icon(Icons.add),
       ),
       body:
-      ListView.builder(
-        itemCount: currentNotes.length,
-        itemBuilder: (context, index) {
-            final note = currentNotes[index];
-            return ListTile(
-              title: Text(note.text),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  //edit button
-                  IconButton(onPressed: () => updateNote(note),
-                      icon: const Icon(Icons.edit),
-                  ),
+      Column(
+        children: [
 
-                  //delete button
-                  IconButton(onPressed: () => deleteNote(note.id),
-                    icon: const Icon(Icons.delete),
-                  ),
-                ],),
-            );
-          },
+          ListView.builder(
+            itemCount: currentNotes.length,
+            itemBuilder: (context, index) {
+                final note = currentNotes[index];
+                return ListTile(
+                  title: Text(note.text),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      //edit button
+                      IconButton(onPressed: () => updateNote(note),
+                          icon: const Icon(Icons.edit),
+                      ),
+
+                      //delete button
+                      IconButton(onPressed: () => deleteNote(note.id),
+                        icon: const Icon(Icons.delete),
+                      ),
+                    ],),
+                );
+              },
+          ),
+        ],
       ),
       //ЭТО НАВИГАЦИЯ ПЕРЕНЕСТИ В ДРАВЕР
       // _pages[_selectedIndex],
