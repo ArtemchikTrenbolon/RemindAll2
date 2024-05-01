@@ -36,7 +36,6 @@ class _MainPageState extends State<MainPage> {
       bottomNavigationBar: MyBottomNavBar(
         onTabChange: (index) => navigateBottomBar(index),
       ),
-        body: _pages[_selectedIndex],
     );
   }
 }

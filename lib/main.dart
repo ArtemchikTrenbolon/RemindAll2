@@ -32,10 +32,10 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  FirstPage(),
+      home:  MainPage(),
       theme: Provider.of<ThemeProvider>(context).themeData,
       routes: {
-        '/firstpage': (context) => FirstPage(),
+        '/firstpage': (context) => MainPage(),
         '/homepage': (context) => HomePage(),
         '/settingspage': (context) => SettingPage(),
         '/profilepage': (context) => ProfilePage(),
