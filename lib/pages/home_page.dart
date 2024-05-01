@@ -100,7 +100,9 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton: FloatingActionButton(
         onPressed: createNote,
-        child: const Icon(Icons.add),
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: Icon(Icons.add, color: Theme.of(context).colorScheme.inversePrimary,
+        ),
       ),
       body:
       Column(
@@ -109,9 +111,9 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: EdgeInsets.only(left: 25.0),
             child: Text(
-              'Notes',
+              'RemindAll',
               style: GoogleFonts.dmSerifText(
-                fontSize:48,
+                fontSize:40,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),
@@ -122,18 +124,24 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 final note = currentNotes[index];
                 return ListTile(
-                  title: Text(note.text),
+                  title: Text(note.text,
+                      style: GoogleFonts.dmSerifText(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                    ),
+                  ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       //edit button
                       IconButton(onPressed: () => updateNote(note),
-                        icon: const Icon(Icons.edit),
+                        icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
                       ),
 
                       //delete button
                       IconButton(onPressed: () => deleteNote(note.id),
-                        icon: const Icon(Icons.delete),
+                        icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.inversePrimary,
+                        ),
                       ),
                     ],
                   ),
