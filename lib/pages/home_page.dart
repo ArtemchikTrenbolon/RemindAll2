@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
@@ -84,6 +85,11 @@ class _HomePageState extends State<HomePage> {
   void deleteNote(int id) {
     context.read<NoteDataBase>().deleteNote(id);
   }
+
+  void signUserOut() {
+    FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context){
 
@@ -91,8 +97,11 @@ class _HomePageState extends State<HomePage> {
 
     List<Note> currentNotes =  noteDatabase.currentNotes;
 
+
+
     return Scaffold(
       appBar: AppBar(
+        actions: [IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))],
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
