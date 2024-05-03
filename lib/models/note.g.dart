@@ -38,30 +38,30 @@ const NoteSchema = CollectionSchema(
 );
 
 int _noteEstimateSize(
-  Note object,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
+    Note object,
+    List<int> offsets,
+    Map<Type, List<int>> allOffsets,
+    ) {
   var bytesCount = offsets.last;
   bytesCount += 3 + object.text.length * 3;
   return bytesCount;
 }
 
 void _noteSerialize(
-  Note object,
-  IsarWriter writer,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
+    Note object,
+    IsarWriter writer,
+    List<int> offsets,
+    Map<Type, List<int>> allOffsets,
+    ) {
   writer.writeString(offsets[0], object.text);
 }
 
 Note _noteDeserialize(
-  Id id,
-  IsarReader reader,
-  List<int> offsets,
-  Map<Type, List<int>> allOffsets,
-) {
+    Id id,
+    IsarReader reader,
+    List<int> offsets,
+    Map<Type, List<int>> allOffsets,
+    ) {
   final object = Note();
   object.id = id;
   object.text = reader.readString(offsets[0]);
@@ -69,11 +69,11 @@ Note _noteDeserialize(
 }
 
 P _noteDeserializeProp<P>(
-  IsarReader reader,
-  int propertyId,
-  int offset,
-  Map<Type, List<int>> allOffsets,
-) {
+    IsarReader reader,
+    int propertyId,
+    int offset,
+    Map<Type, List<int>> allOffsets,
+    ) {
   switch (propertyId) {
     case 0:
       return (reader.readString(offset)) as P;
@@ -117,19 +117,19 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
       if (query.whereSort == Sort.asc) {
         return query
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
-            )
+          IdWhereClause.lessThan(upper: id, includeUpper: false),
+        )
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
-            );
+          IdWhereClause.greaterThan(lower: id, includeLower: false),
+        );
       } else {
         return query
             .addWhereClause(
-              IdWhereClause.greaterThan(lower: id, includeLower: false),
-            )
+          IdWhereClause.greaterThan(lower: id, includeLower: false),
+        )
             .addWhereClause(
-              IdWhereClause.lessThan(upper: id, includeUpper: false),
-            );
+          IdWhereClause.lessThan(upper: id, includeUpper: false),
+        );
       }
     });
   }
@@ -153,11 +153,11 @@ extension NoteQueryWhere on QueryBuilder<Note, Note, QWhereClause> {
   }
 
   QueryBuilder<Note, Note, QAfterWhereClause> idBetween(
-    Id lowerId,
-    Id upperId, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
+      Id lowerId,
+      Id upperId, {
+        bool includeLower = true,
+        bool includeUpper = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IdWhereClause.between(
         lower: lowerId,
@@ -180,9 +180,9 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> idGreaterThan(
-    Id value, {
-    bool include = false,
-  }) {
+      Id value, {
+        bool include = false,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
@@ -193,9 +193,9 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> idLessThan(
-    Id value, {
-    bool include = false,
-  }) {
+      Id value, {
+        bool include = false,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
@@ -206,11 +206,11 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> idBetween(
-    Id lower,
-    Id upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
+      Id lower,
+      Id upper, {
+        bool includeLower = true,
+        bool includeUpper = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'id',
@@ -223,9 +223,9 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> textEqualTo(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      String value, {
+        bool caseSensitive = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'text',
@@ -236,10 +236,10 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> textGreaterThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
+      String value, {
+        bool include = false,
+        bool caseSensitive = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
@@ -251,10 +251,10 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> textLessThan(
-    String value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
+      String value, {
+        bool include = false,
+        bool caseSensitive = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
@@ -266,12 +266,12 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> textBetween(
-    String lower,
-    String upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
+      String lower,
+      String upper, {
+        bool includeLower = true,
+        bool includeUpper = true,
+        bool caseSensitive = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
         property: r'text',
@@ -285,9 +285,9 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> textStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      String value, {
+        bool caseSensitive = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
         property: r'text',
@@ -298,9 +298,9 @@ extension NoteQueryFilter on QueryBuilder<Note, Note, QFilterCondition> {
   }
 
   QueryBuilder<Note, Note, QAfterFilterCondition> textEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
+      String value, {
+        bool caseSensitive = true,
+      }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
         property: r'text',

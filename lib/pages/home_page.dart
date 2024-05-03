@@ -4,7 +4,7 @@ import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../components/bottom_nav_bar.dart';
 import '../models/note.dart';
 import '../models/note_database.dart';
@@ -28,23 +28,41 @@ class _HomePageState extends State<HomePage> {
   }
   //create a note
   void createNote() {
+    TextEditingController textController = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
+        title: Text("Create Note",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.inversePrimary
+          ),
+        ),
         content: TextField(
           controller: textController,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary
+          ),
         ),
         actions: [
           MaterialButton(
             onPressed: (){
-              context.read<NoteDataBase>().addNote(textController.text);
-
-              textController.clear();
-
               Navigator.pop(context);
+              textController.clear();
             },
-            child: const Text("Create"),
-          )
+            child: const Text("Закрыть"),
+          ),
+          MaterialButton(
+            onPressed: (){
+              if (textController.text.isNotEmpty){
+                context.read<NoteDataBase>().addNote(textController.text);
+
+                textController.clear();
+
+                Navigator.pop(context);
+              }
+            },
+            child: Text("Создать"),
+          ),
         ],
       ),
     );
@@ -56,13 +74,23 @@ class _HomePageState extends State<HomePage> {
   }
 
   //update note
-  void updateNote(Note note) {
+  void updateNote(BuildContext context, Note note) {
     textController.text = note.text;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text("Update Note"),
-        content: TextField(controller: textController),
+        title: Text(
+          "Update Note",
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary
+          ),
+        ),
+        content: TextField(
+            controller: textController,
+          style: TextStyle(
+              color: Theme.of(context).colorScheme.inversePrimary
+          ),
+        ),
         actions: [
           MaterialButton(
             onPressed: () {
@@ -74,7 +102,7 @@ class _HomePageState extends State<HomePage> {
 
               Navigator.pop(context);
             },
-            child: const Text("Update"),
+            child: const Text("Изменить"),
           )
         ],
       ),
@@ -82,13 +110,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   //delete a note
-  void deleteNote(int id) {
+  void deleteNote(BuildContext context, int id) {
     context.read<NoteDataBase>().deleteNote(id);
   }
 
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
+
 
   @override
   Widget build(BuildContext context){
@@ -101,7 +127,6 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: [IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))],
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -132,27 +157,33 @@ class _HomePageState extends State<HomePage> {
               itemCount: currentNotes.length,
               itemBuilder: (context, index) {
                 final note = currentNotes[index];
-                return ListTile(
-                  title: Text(note.text,
-                      style: GoogleFonts.dmSerifText(
-                      color: Theme.of(context).colorScheme.inversePrimary,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Slidable(
+                    endActionPane: ActionPane(
+                      motion: const StretchMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (context) => updateNote(context, note),
+                          icon: Icons.edit,
+                          backgroundColor: Colors.green,
+                        ),
+                        SlidableAction(
+                          onPressed: (context) => deleteNote(context, note.id),
+                          icon: Icons.delete,
+                          backgroundColor: Colors.red,
+                        ),
+                      ],
                     ),
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      //edit button
-                      IconButton(onPressed: () => updateNote(note),
-                        icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.inversePrimary,
+                    child: ListTile(
+                      title: Text(
+                        note.text,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                       ),
-
-                      //delete button
-                      IconButton(onPressed: () => deleteNote(note.id),
-                        icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.inversePrimary,
-                        ),
-                      ),
-                    ],
+                      // Остальной код ListTile
+                    ),
                   ),
                 );
               },

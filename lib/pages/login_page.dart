@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/components/my_button.dart';
 import 'package:flutter_app3/components/my_textfiled.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 
@@ -72,35 +73,79 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: 50),
-            
-                Icon(Icons.lock,
-                  size: 100,
+
+                Image.asset(
+                  'lib/images/waving-hand_icon.png',
+                  width: 100,
+                  height: 100,
                 ),
-            
-                SizedBox(height: 50),
+
+                SizedBox(height: 25),
+
+                Text(
+                  'Hello again!',
+                  style: GoogleFonts.bebasNeue(
+                    fontSize: 36,
+                  ),
+                ),
+
+
+                SizedBox(height: 10),
             
                 Text(
-                    'Welcome back you\`ve been missed!',
+                    'Добро пожаловать обратно, мы по вам скучали!',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.grey[700],
-                        fontSize: 16,
+                        fontSize: 17,
                     ),
                 ),
             
                 SizedBox(height: 10),
             
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscureText: false,
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: emailController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Email',
+                            ),
+                          )
+                  ),
                 ),
-            
+                ),
                 SizedBox(height: 10),
-            
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
+
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                        padding: EdgeInsets.only(left: 20.0),
+                        child: TextField(
+                          controller: passwordController,
+                          obscureText: true,
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Password',
+                          ),
+                        )
+                    ),
+                  ),
                 ),
             
                 SizedBox(height: 10),
@@ -111,7 +156,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Text(
-                        'Forgot Password?',
+                        'Забыли пароль?',
                         style: TextStyle(
                           color: Colors.grey[600],
                         ),
@@ -122,74 +167,39 @@ class _LoginPageState extends State<LoginPage> {
             
                 SizedBox(height: 25),
             
-                MyButton(
-                  text: "Sign In",
-                  onTap: singUserIn,
-                ),
-            
-                const SizedBox(height: 50),
-            
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(
+                      child: MyButton(
+                        text: "Войти",
+                        onTap: singUserIn,
                       ),
-            
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'Or continue with',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      ),
-            
-                      Expanded(
-                        child: Divider(
-                          thickness: 0.5,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-            
+
                 SizedBox(height: 50),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SquareTile(
-                        onTap: () => AuthService().signInWithGoogle(),
-                        imagePath: 'lib/images/google.png'
-                    ),
-                    const SizedBox(width: 25),
-
-                    SquareTile(
-                        onTap: () {},
-                        imagePath: 'lib/images/apple.png'
-                    ),
-                  ],
-                ),
-            
                 const SizedBox(height: 50),
             
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                        'Not a member?',
+                        'Нет аккаунта?',
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(width: 4),
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                          'Register now',
+                          'Зарегистрироваться',
                         style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold),

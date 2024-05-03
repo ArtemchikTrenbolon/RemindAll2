@@ -27,6 +27,7 @@ class SettingPage extends StatelessWidget{
             Text("Dark Mode",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
+                fontSize: 18,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),

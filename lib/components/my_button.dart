@@ -16,8 +16,8 @@ class MyButton extends StatelessWidget{
     return GestureDetector(
       onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(25),
-          margin: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.all(5),
+          margin: const EdgeInsets.symmetric(horizontal: 5),
           decoration: BoxDecoration(
             color: Colors.black,
             borderRadius:  BorderRadius.circular(8),
@@ -28,7 +28,7 @@ class MyButton extends StatelessWidget{
               style:  TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 17,
               ),
             ),
           ),

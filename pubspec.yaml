@@ -44,6 +44,8 @@ dependencies:
   firebase_auth: ^4.19.4
   firebase_core: ^2.30.1
   google_sign_in: ^6.2.1
+  flutter_slidable: ^3.1.0
+  build_runner:
 
 dev_dependencies:
   flutter_test:
@@ -74,6 +76,14 @@ flutter:
   assets:
       - lib/images/apple.png
       - lib/images/google.png
+      - lib/images/waving-hand_icon.png
+      - lib/images/personal.png
+  fonts:
+        - family: Bebas Neue
+          fonts:
+            - asset: lib/fonts/BebasNeue-Book.ttf
+            - asset: lib/fonts/BebasNeue-Bold.ttf
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

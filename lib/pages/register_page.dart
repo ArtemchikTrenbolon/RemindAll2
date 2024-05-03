@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app3/components/my_button.dart';
 import 'package:flutter_app3/components/my_textfiled.dart';
 import 'package:flutter_app3/services/auth_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 
 
@@ -42,7 +43,7 @@ class _RegisterPageState extends State<RegisterPage> {
       }
 
       else {
-        showErrorMessage("Password don\`t match!");
+        showErrorMessage('Password don\`t match!');
       }
       Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
@@ -60,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
             title: Center(
               child: Text(
                 message,
-                style: const TextStyle(color: Colors.white),
+                style:  TextStyle(color: Colors.white),
               ),
             ),
           );
@@ -81,115 +82,135 @@ class _RegisterPageState extends State<RegisterPage> {
                 children: [
                   SizedBox(height: 25),
 
-                  Icon(Icons.lock,
-                    size: 50,
-                  ),
+                Image.asset(
+                  'lib/images/personal.png',
 
-                  SizedBox(height: 25),
+                  width: 100,
+                  height: 100,
+                ),
+
+
+                  SizedBox(height: 10),
 
                   Text(
                     'Let\`s create an account for you!',
-                    style: TextStyle(
-                      color: Colors.grey[700],
-                      fontSize: 16,
+                    style: GoogleFonts.bebasNeue(
+                      fontSize: 28,
                     ),
                   ),
 
                   SizedBox(height: 10),
 
-                  MyTextField(
-                    controller: emailController,
-                    hintText: 'Email',
-                    obscureText: false,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: emailController,
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Email',
+                            ),
+                          )
+                      ),
+                    ),
                   ),
 
                   SizedBox(height: 10),
 
-                  MyTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    obscureText: true,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Password',
+                            ),
+                          )
+                      ),
+                    ),
                   ),
 
                   SizedBox(height: 10),
 
-                  MyTextField(
-                    controller: confirmPasswordController,
-                    hintText: 'Confirm Password',
-                    obscureText: true,
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Padding(
+                          padding: EdgeInsets.only(left: 20.0),
+                          child: TextField(
+                            controller: confirmPasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Confirm Password',
+                            ),
+                          )
+                      ),
+                    ),
                   ),
 
 
                   SizedBox(height: 25),
 
-                  MyButton(
-                    text: "Sign Up",
-                    onTap: singUserUp,
-                  ),
-
-                  const SizedBox(height: 50),
-
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Center(
+                        child: MyButton(
+                          text: "Зарегистрироваться",
+                          onTap: singUserUp,
                         ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            'Or continue with',
-                            style: TextStyle(color: Colors.grey[700]),
-                          ),
-                        ),
-
-                        Expanded(
-                          child: Divider(
-                            thickness: 0.5,
-                            color: Colors.grey[400],
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
                   ),
+
+
+
+                  SizedBox(height: 50),
+
+
 
                   SizedBox(height: 50),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SquareTile(
-                          onTap: () => AuthService().signInWithGoogle(),
-                          imagePath: 'lib/images/google.png'
-                      ),
-                      const SizedBox(width: 25),
-
-                      SquareTile(
-                          onTap: () {},
-                          imagePath: 'lib/images/apple.png'
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 50),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
                       Text(
-                        'Already have an account?',
+                        'Уже есть аккаунт?',
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(width: 4),
                       GestureDetector(
                         onTap: widget.onTap,
                         child: const Text(
-                          'Login now',
+                          'Войти',
                           style: TextStyle(
                               color: Colors.blue,
                               fontWeight: FontWeight.bold),
