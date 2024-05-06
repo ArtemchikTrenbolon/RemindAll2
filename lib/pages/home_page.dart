@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
@@ -7,132 +8,85 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../components/bottom_nav_bar.dart';
+import '../models/firestore.dart';
 import '../models/note.dart';
 import '../models/note_database.dart';
 import 'home_page.dart';
 
-class HomePage extends StatefulWidget{
+
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  final textController = TextEditingController();
+class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final TextEditingController textController = TextEditingController();
+  final FirestoreService firestoreService = FirestoreService();
+  late final AnimationController _controller = AnimationController(vsync: this);
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-    readNotes();
+    _controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        _controller.repeat();
+      }
+    });
   }
 
-  void SignIn() {
-    readNotes();
-  }
-
-  void SignOut() {
-    readNotes();
-  }
-  //create a note
-  void createNote() {
-    TextEditingController textController = TextEditingController();
+  void openNoteBox({String? docID, String? initialText}) {
+    String buttonText = docID == null ? "Создать" : "Изменить";
+    String dialogTitle = docID == null ? "Создать заметку" : "Изменить заметку";
+    textController.text = initialText ?? '';
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text("Create Note",
+        title: Text(
+          dialogTitle,
           style: TextStyle(
-            color: Theme.of(context).colorScheme.inversePrimary
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
         content: TextField(
           controller: textController,
           style: TextStyle(
-              color: Theme.of(context).colorScheme.inversePrimary
+            color: Theme.of(context).colorScheme.inversePrimary,
           ),
         ),
         actions: [
           MaterialButton(
-            onPressed: (){
+            onPressed: () {
               Navigator.pop(context);
               textController.clear();
             },
             child: const Text("Закрыть"),
           ),
           MaterialButton(
-            onPressed: (){
-              if (textController.text.isNotEmpty){
-                context.read<NoteDataBase>().addNote(textController.text);
-
+            onPressed: () async{
+              final user = _auth.currentUser;
+              if (user != null) {
+                if (initialText  == null) {
+                  await firestoreService.addNote(user.uid, textController.text);
+                }
+                else {
+                  await firestoreService.updateNote(user.uid, initialText, textController.text);
+                }
                 textController.clear();
-
                 Navigator.pop(context);
               }
             },
-            child: Text("Создать"),
-          ),
-        ],
-      ),
-    );
-  }
-
-  //read notes
-  void readNotes() {
-    context.read<NoteDataBase>().fetchNotes();
-  }
-
-  //update note
-  void updateNote(BuildContext context, Note note) {
-    textController.text = note.text;
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          "Update Note",
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.inversePrimary
-          ),
-        ),
-        content: TextField(
-            controller: textController,
-          style: TextStyle(
-              color: Theme.of(context).colorScheme.inversePrimary
-          ),
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              context
-                  .read<NoteDataBase>()
-                  .updateNote(note.id, textController.text);
-
-              textController.clear();
-
-              Navigator.pop(context);
-            },
-            child: const Text("Изменить"),
+            child: Text(buttonText),
           )
         ],
       ),
     );
   }
 
-  //delete a note
-  void deleteNote(BuildContext context, int id) {
-    context.read<NoteDataBase>().deleteNote(id);
-  }
-
-
-
   @override
-  Widget build(BuildContext context){
-
-    final noteDatabase = context.watch<NoteDataBase>();
-
-    List<Note> currentNotes =  noteDatabase.currentNotes;
-
-
-
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -141,13 +95,14 @@ class _HomePageState extends State<HomePage> {
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
       floatingActionButton: FloatingActionButton(
-        onPressed: createNote,
+        onPressed: openNoteBox,
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: Icon(Icons.add, color: Theme.of(context).colorScheme.inversePrimary,
+        child: Icon(
+          Icons.add,
+          color: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
-      body:
-      Column(
+      body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
@@ -155,57 +110,82 @@ class _HomePageState extends State<HomePage> {
             child: Text(
               'RemindAll',
               style: GoogleFonts.dmSerifText(
-                fontSize:40,
+                fontSize: 40,
                 color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: currentNotes.length,
-              itemBuilder: (context, index) {
-                final note = currentNotes[index];
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5.0),
-                  child: Slidable(
-                    endActionPane: ActionPane(
-                      motion: const StretchMotion(),
-                      children: [
-                        SlidableAction(
-                          onPressed: (context) => updateNote(context, note),
-                          icon: Icons.edit,
-                          backgroundColor: Colors.green,
-                        ),
-                        SlidableAction(
-                          onPressed: (context) => deleteNote(context, note.id),
-                          icon: Icons.delete,
-                          backgroundColor: Colors.red,
-                        ),
-                      ],
-                    ),
-                    child: Stack(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            note.text,
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.inversePrimary,
+            child: StreamBuilder<QuerySnapshot>(
+              stream: _auth.currentUser != null
+                  ? firestoreService.getNotesStream(_auth.currentUser!.uid)
+                  : null,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List notesList = snapshot.data!.docs;
+                  return ListView.builder(
+                    itemCount: notesList.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot document = notesList[index];
+                      String docID = document.id;
+
+                      Map<String, dynamic> data =
+                      document.data() as Map<String, dynamic>;
+                      String noteText = data['note'];
+
+                      return Slidable(// Используем контроллер Slidable
+                        endActionPane: ActionPane(
+                          motion: const StretchMotion(),
+                          children: [
+                            SlidableAction(
+                              onPressed: (context) =>
+                                  openNoteBox(docID: docID, initialText: noteText),
+                              icon: Icons.edit,
+                              backgroundColor: Colors.green,
                             ),
-                          ),
-                          trailing: SizedBox(), // Пустой SizedBox для выравнивания текста
+                            SlidableAction(
+                              onPressed: (context) =>
+                                  firestoreService.deleteNote(docID, _auth.currentUser!.uid),
+                              icon: Icons.delete,
+                              backgroundColor: Colors.red,
+                            ),
+                          ],
                         ),
-                        Positioned(
-                          right: 0, // Выравниваем анимацию справа
-                          child: Lottie.network(
-                            "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
-                            width: 50,
-                            height: 50,
-                          ),
+                        child: Stack(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                noteText,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                ),
+                              ),
+                              trailing: SizedBox(),
+                            ),
+                            Positioned(
+                              right: 0,
+                              child: _controller != null ? Lottie.network(
+                                "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
+                                width: 50,
+                                height: 50,
+                                controller: _controller,
+                                onLoaded: (composition) {
+                                  _controller
+                                    ..duration = composition.duration
+                                    ..forward();
+                                },
+                              ) : Container(),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                );
+                      );
+                    },
+                  );
+                } else {
+                  return const Text("No notes...");
+                }
               },
             ),
           ),

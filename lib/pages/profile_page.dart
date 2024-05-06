@@ -11,14 +11,13 @@ class ProfilePage extends StatefulWidget{
   ProfilePage({super.key});
 
   @override
-  State<ProfilePage> createState() => _SettingPageState();
+  State<ProfilePage> createState() => _ProfilePageState();
 }
 
-class _SettingPageState extends State<ProfilePage>{
+class _ProfilePageState extends State<ProfilePage>{
 
   void signUserOut() {
     FirebaseAuth.instance.signOut();
-    context.read<NoteDataBase>().fetchNotes();
   }
   final user = FirebaseAuth.instance.currentUser!;
 

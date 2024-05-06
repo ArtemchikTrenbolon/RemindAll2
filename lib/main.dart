@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app3/firebase_options.dart';
 import 'package:flutter_app3/models/note_database.dart';
 import 'package:flutter_app3/pages/auth_page.dart';
 import 'package:flutter_app3/pages/first_page.dart';
@@ -11,10 +12,11 @@ import 'package:flutter_app3/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app3/main.dart';
 
+
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await NoteDataBase.initialize();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
 
   runApp(
