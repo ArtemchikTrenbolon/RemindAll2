@@ -14,6 +14,7 @@ class MyBottomNavBar extends StatelessWidget{
         child: GNav(
                 onTabChange: (value) => onTabChange!(value),
                 backgroundColor: Colors.black,
+                haptic: false,
                 color: Colors.white,
                 activeColor: Colors.white,
                 tabBackgroundColor: Colors.grey.shade800,
@@ -23,6 +24,7 @@ class MyBottomNavBar extends StatelessWidget{
                   GButton(
                     icon: Icons.home,
                     text: 'Home',
+
                   ),
                   GButton(
                       icon: Icons.person,

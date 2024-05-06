@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../components/bottom_nav_bar.dart';
@@ -23,7 +24,14 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState(){
     super.initState();
+    readNotes();
+  }
 
+  void SignIn() {
+    readNotes();
+  }
+
+  void SignOut() {
     readNotes();
   }
   //create a note
@@ -175,14 +183,26 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    child: ListTile(
-                      title: Text(
-                        note.text,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                    child: Stack(
+                      children: [
+                        ListTile(
+                          title: Text(
+                            note.text,
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.inversePrimary,
+                            ),
+                          ),
+                          trailing: SizedBox(), // Пустой SizedBox для выравнивания текста
                         ),
-                      ),
-                      // Остальной код ListTile
+                        Positioned(
+                          right: 0, // Выравниваем анимацию справа
+                          child: Lottie.network(
+                            "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
+                            width: 50,
+                            height: 50,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );

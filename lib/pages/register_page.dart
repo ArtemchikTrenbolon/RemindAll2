@@ -7,6 +7,7 @@ import 'package:flutter_app3/components/my_button.dart';
 import 'package:flutter_app3/components/my_textfiled.dart';
 import 'package:flutter_app3/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 
 
@@ -26,7 +27,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final confirmPasswordController = TextEditingController();
 
   void singUserUp() async{
-
     showDialog(
       context: context,
       builder: (context) {
@@ -89,17 +89,21 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SizedBox(height: 25),
-
-                Image.asset(
-                  'lib/images/personal.png',
-
-                  width: 100,
-                  height: 100,
-                ),
-
-
                   SizedBox(height: 10),
+
+                // Lottie.network(
+                //     "https://lottie.host/3d82c982-589c-45b0-a055-6223eae39b31/zDyneQphpv.json",
+                //   width: 150,
+                //   height: 150,
+                // ),
+                  Image.asset(
+                    "lib/images/Animation.gif",
+                    width: 150,
+                    height: 150,
+                  ),
+
+
+                  SizedBox(height: 15),
 
                   Text(
                     'Let\`s create an account for you!',

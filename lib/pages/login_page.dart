@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_app3/components/my_button.dart';
 import 'package:flutter_app3/components/my_textfiled.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 
 
@@ -75,9 +77,9 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 50),
 
                 Image.asset(
-                  'lib/images/waving-hand_icon.png',
-                  width: 100,
-                  height: 100,
+                  "lib/images/WavingHandYea.png",
+                  width: 150,
+                  height: 150,
                 ),
 
                 SizedBox(height: 25),

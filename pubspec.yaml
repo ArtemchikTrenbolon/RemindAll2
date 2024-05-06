@@ -47,6 +47,7 @@ dependencies:
   flutter_slidable: ^3.1.0
   build_runner:
   cloud_firestore: ^4.17.2
+  lottie: ^3.1.0
 
 dev_dependencies:
   flutter_test:
@@ -80,6 +81,8 @@ flutter:
       - lib/images/waving-hand_icon.png
       - lib/images/personal.png
       - lib/images/pencil.png
+      - lib/images/WavingHandYea.png
+      - lib/images/Animation.gif
   fonts:
         - family: Bebas Neue
           fonts:
