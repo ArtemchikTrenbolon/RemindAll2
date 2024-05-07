@@ -99,7 +99,7 @@ class _ProfilePageState extends State<ProfilePage>{
                   Text(
                     user.email!,
                     textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey[700]),
+                    style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
                   ),
 
                   SizedBox(height: 50),
@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage>{
                     padding: EdgeInsets.only(left: 25.0),
                     child: Text(
                         'Подробности',
-                        style: TextStyle(color: Colors.grey[600])
+                        style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)
                     ),
                   ),
                   MyTextBox(

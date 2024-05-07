@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app3/firebase_options.dart';
 import 'package:flutter_app3/models/note_database.dart';
 import 'package:flutter_app3/pages/auth_page.dart';
+import 'package:flutter_app3/pages/event_page.dart';
 import 'package:flutter_app3/pages/first_page.dart';
 import 'package:flutter_app3/pages/home_page.dart';
 import 'package:flutter_app3/pages/login_or_register_page.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget{
       routes: {
         '/firstpage': (context) => MainPage(),
         '/homepage': (context) => MainPage(),
+        '/eventpage': (context) => EventPage(),
         '/settingspage': (context) => SettingPage(),
         '/profilepage': (context) => ProfilePage(),
       },

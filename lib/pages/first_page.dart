@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app3/pages/event_page.dart';
 import 'package:flutter_app3/pages/login_page.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
@@ -24,6 +25,8 @@ class _MainPageState extends State<MainPage> {
 
   final List<Widget> _pages = [
     HomePage(),
+
+    EventPage(),
 
     ProfilePage(),
 

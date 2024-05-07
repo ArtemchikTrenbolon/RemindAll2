@@ -24,16 +24,19 @@ class MyBottomNavBar extends StatelessWidget{
                   GButton(
                     icon: Icons.home,
                     text: 'Home',
-
                   ),
                   GButton(
-                      icon: Icons.person,
-                      text: 'Profile',
+                    icon: Icons.event,
+                    text: 'Event',
                   ),
-                  GButton(
-                      icon: Icons.settings,
-                      text: 'Settings',
-                  )
+                  // GButton(
+                  //     icon: Icons.person,
+                  //     text: 'Profile',
+                  // ),
+                  // GButton(
+                  //     icon: Icons.settings,
+                  //     text: 'Settings',
+                  // ),
                 ],
               ),
       ),

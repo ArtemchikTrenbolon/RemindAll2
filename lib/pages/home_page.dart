@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app3/components/drawer.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -103,7 +104,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
+        shape: CircleBorder(),
         onPressed: openNoteBox,
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Icon(
@@ -111,6 +114,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           color: Theme.of(context).colorScheme.inversePrimary,
         ),
       ),
+      drawer: MyDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -133,6 +137,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 if (snapshot.hasData) {
                   List notesList = snapshot.data!.docs;
                   return ListView.builder(
+                    itemExtent: 75,
                     itemCount: notesList.length,
                     itemBuilder: (context, index) {
                       DocumentSnapshot document = notesList[index];
@@ -142,52 +147,61 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       document.data() as Map<String, dynamic>;
                       String noteText = data['note'];
 
-                      return Slidable(// Используем контроллер Slidable
+                      return Slidable(
                         endActionPane: ActionPane(
                           motion: const StretchMotion(),
                           children: [
                             SlidableAction(
-                              onPressed: (context) =>
-                                  openNoteBox(docID: docID, initialText: noteText),
+                              borderRadius: BorderRadius.circular(8),
+                              onPressed: (context) => openNoteBox(
+                                  docID: docID, initialText: noteText),
                               icon: Icons.edit,
                               backgroundColor: Colors.green,
                             ),
                             SlidableAction(
-                              onPressed: (context) =>
-                                  firestoreService.deleteNote(docID, _auth.currentUser!.uid),
+                              borderRadius: BorderRadius.circular(8),
+                              onPressed: (context) => firestoreService
+                                  .deleteNote(docID, _auth.currentUser!.uid),
                               icon: Icons.delete,
                               backgroundColor: Colors.red,
                             ),
                           ],
                         ),
-                        child: Stack(
-                          children: [
-                            ListTile(
-                              title: Text(
-                                noteText,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary,
-                                ),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          margin: EdgeInsets.only(
+                            left: 15,
+                            right: 15,
+                          ),
+                          child: ListTile(
+                            title: Text(
+                              noteText,
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
                               ),
-                              trailing: SizedBox(),
                             ),
-                            Positioned(
-                              right: 0,
-                              child: _controller != null ? Lottie.network(
+                            trailing: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: _controller != null
+                                  ? Lottie.network(
                                 "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
-                                width: 50,
-                                height: 50,
                                 controller: _controller,
                                 onLoaded: (composition) {
                                   _controller
-                                    ..duration = composition.duration
+                                    ..duration =
+                                        composition.duration
                                     ..forward();
                                 },
-                              ) : Container(),
+                              )
+                                  : Container(),
                             ),
-                          ],
+                          ),
                         ),
                       );
                     },
