@@ -52,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
           .collection("Users")
           .doc(userCredential.user!.email)
           .set({
-            'username' : emailController.text.split('@')[0]
+            'username' : emailController.text.split('@')[0],
       });
     if (context.mounted) Navigator.pop(context);
     } on FirebaseAuthException catch (e) {

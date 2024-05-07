@@ -65,14 +65,13 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             child: const Text("Закрыть"),
           ),
           MaterialButton(
-            onPressed: () async{
+            onPressed: () async {
               final user = _auth.currentUser;
               if (user != null) {
-                if (initialText  == null) {
+                if (initialText == null) {
                   await firestoreService.addNote(user.uid, textController.text);
-                }
-                else {
-                  await firestoreService.updateNote(user.uid, initialText, textController.text);
+                } else {
+                  await firestoreService.updateNote(user.uid, docID!, textController.text);
                 }
                 textController.clear();
                 Navigator.pop(context);
@@ -84,6 +83,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -24,22 +24,24 @@ class FirestoreService {
     return notesStream;
   }
 
-  Future<void> updateNote(String userId, String noteId, String newNote) {
-    return usersCollection
+  Future<void> updateNote(String userId, String docID, String newNote) {
+    return FirebaseFirestore.instance
+        .collection('Users')
         .doc(userId)
         .collection('notes')
-        .doc(noteId)
+        .doc(docID)
         .update({
       'note': newNote,
       'timestamp': Timestamp.now(),
     });
   }
 
-  Future<void> deleteNote(String userId, String noteId) {
-    return usersCollection
+  Future<void> deleteNote(String docID, String userId) {
+    return FirebaseFirestore.instance
+        .collection('Users')
         .doc(userId)
         .collection('notes')
-        .doc(noteId)
+        .doc(docID)
         .delete();
   }
 }

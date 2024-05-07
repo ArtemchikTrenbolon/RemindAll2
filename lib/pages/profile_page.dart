@@ -26,42 +26,42 @@ class _ProfilePageState extends State<ProfilePage>{
   Future<void> editProfile(String field) async{
     String newValue = "";
     await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          title: Text(
-            "Edit ${field}",
-            style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-          ),
-          content: TextField(
-            autofocus: true,
-            style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-            decoration: InputDecoration(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        title: Text(
+          "Edit ${field}",
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+        ),
+        content: TextField(
+          autofocus: true,
+          style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+          decoration: InputDecoration(
               hintText: "Enter new ${field}",
               hintStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)
-            ),
-            onChanged: (value) {
-              newValue = value;
-            },
           ),
-          actions: [
-            TextButton(
-                child: Text(
-                  'Закрыть',
-                  style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-                ),
-              onPressed: () => Navigator.pop(context),
-            ),
-
-            TextButton(
-              child: Text(
-                'Сохранить',
-                style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
-              ),
-              onPressed: () => Navigator.of(context).pop(newValue),
-            )
-          ],
+          onChanged: (value) {
+            newValue = value;
+          },
         ),
+        actions: [
+          TextButton(
+            child: Text(
+              'Закрыть',
+              style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+
+          TextButton(
+            child: Text(
+              'Сохранить',
+              style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
+            ),
+            onPressed: () => Navigator.of(context).pop(newValue),
+          )
+        ],
+      ),
     );
 
     if (newValue.trim().length > 0) {
@@ -72,61 +72,61 @@ class _ProfilePageState extends State<ProfilePage>{
   @override
   Widget build(BuildContext){
     return Scaffold(
-      appBar: AppBar(
-        actions: [IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))],
-        title: Text("Страница пользователя"),
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        foregroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").doc(user.email).snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final userData = snapshot.data!.data() as Map<String, dynamic>;
+        appBar: AppBar(
+          actions: [IconButton(onPressed: signUserOut, icon: Icon(Icons.logout))],
+          title: Text("Страница пользователя"),
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+          foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+        ),
+        body: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance.collection("Users").doc(user.email).snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final userData = snapshot.data!.data() as Map<String, dynamic>;
 
-            return ListView(
-              children: [
-                SizedBox(height: 50),
+              return ListView(
+                children: [
+                  SizedBox(height: 50),
 
-                Image.asset(
-                  'lib/images/personal.png',
+                  Image.asset(
+                    'lib/images/personal.png',
 
-                  width: 100,
-                  height: 100,
-                ),
-
-                Text(
-                  user.email!,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
-
-                SizedBox(height: 50),
-
-                Padding(
-                  padding: EdgeInsets.only(left: 25.0),
-                  child: Text(
-                      'Подробности',
-                      style: TextStyle(color: Colors.grey[600])
+                    width: 100,
+                    height: 100,
                   ),
-                ),
-                MyTextBox(
-                  text: userData['username'],
-                  sectionName: 'username',
-                  onPressed: () => editProfile('username'),
-                ),
-              ],
+
+                  Text(
+                    user.email!,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
+
+                  SizedBox(height: 50),
+
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.0),
+                    child: Text(
+                        'Подробности',
+                        style: TextStyle(color: Colors.grey[600])
+                    ),
+                  ),
+                  MyTextBox(
+                    text: userData['username'],
+                    sectionName: 'username',
+                    onPressed: () => editProfile('username'),
+                  ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error${snapshot.error}'),
+              );
+            }
+            return const Center(child: CircularProgressIndicator(),
             );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error${snapshot.error}'),
-            );
-          }
-          return const Center(child: CircularProgressIndicator(),
-          );
-        },
-      )
-      );
+          },
+        )
+    );
   }
 }

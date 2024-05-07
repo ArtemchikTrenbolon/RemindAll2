@@ -1,214 +1,96 @@
-// import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/material.dart';
+// import 'package:flutter_app3/pages/home_page.dart';
 // import 'package:flutter_app3/pages/profile_page.dart';
-// import 'package:flutter_app3/pages/setting_page.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:lottie/lottie.dart';
-// import 'package:provider/provider.dart';
-// import 'package:flutter_slidable/flutter_slidable.dart';
-// import '../components/bottom_nav_bar.dart';
-// import '../models/note.dart';
-// import '../models/note_database.dart';
-// import 'home_page.dart';
 //
-// class HomePage extends StatefulWidget{
-//   const HomePage({super.key});
+// class TaskScreen extends StatefulWidget {
+//   const TaskScreen({super.key});
 //
 //   @override
-//   State<HomePage> createState() => _HomePageState();
+//   State<TaskScreen> createState() => _TaskScreenState();
 // }
 //
-// class _HomePageState extends State<HomePage> {
-//   final textController = TextEditingController();
+// class _TaskScreenState extends State<TaskScreen> {
+//   int index = 0;
 //
 //   @override
-//   void initState(){
-//     super.initState();
-//     readNotes();
-//   }
-//
-//   void SignIn() {
-//     readNotes();
-//   }
-//
-//   void SignOut() {
-//     readNotes();
-//   }
-//   //create a note
-//   void createNote() {
-//     TextEditingController textController = TextEditingController();
-//     showDialog(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         title: Text("Create Note",
-//           style: TextStyle(
-//               color: Theme.of(context).colorScheme.inversePrimary
-//           ),
-//         ),
-//         content: TextField(
-//           controller: textController,
-//           style: TextStyle(
-//               color: Theme.of(context).colorScheme.inversePrimary
-//           ),
-//         ),
-//         actions: [
-//           MaterialButton(
-//             onPressed: (){
-//               Navigator.pop(context);
-//               textController.clear();
-//             },
-//             child: const Text("Закрыть"),
-//           ),
-//           MaterialButton(
-//             onPressed: (){
-//               if (textController.text.isNotEmpty){
-//                 context.read<NoteDataBase>().addNote(textController.text);
-//
-//                 textController.clear();
-//
-//                 Navigator.pop(context);
-//               }
-//             },
-//             child: Text("Создать"),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-//
-//   //read notes
-//   void readNotes() {
-//     context.read<NoteDataBase>().fetchNotes();
-//   }
-//
-//   //update note
-//   void updateNote(BuildContext context, Note note) {
-//     textController.text = note.text;
-//     showDialog(
-//       context: context,
-//       builder: (context) => AlertDialog(
-//         title: Text(
-//           "Update Note",
-//           style: TextStyle(
-//               color: Theme.of(context).colorScheme.inversePrimary
-//           ),
-//         ),
-//         content: TextField(
-//           controller: textController,
-//           style: TextStyle(
-//               color: Theme.of(context).colorScheme.inversePrimary
-//           ),
-//         ),
-//         actions: [
-//           MaterialButton(
-//             onPressed: () {
-//               context
-//                   .read<NoteDataBase>()
-//                   .updateNote(note.id, textController.text);
-//
-//               textController.clear();
-//
-//               Navigator.pop(context);
-//             },
-//             child: const Text("Изменить"),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-//
-//   //delete a note
-//   void deleteNote(BuildContext context, int id) {
-//     context.read<NoteDataBase>().deleteNote(id);
-//   }
-//
-//
-//
-//   @override
-//   Widget build(BuildContext context){
-//
-//     final noteDatabase = context.watch<NoteDataBase>();
-//
-//     List<Note> currentNotes =  noteDatabase.currentNotes;
-//
-//
-//
+//   Widget build(BuildContext context) {
+//     Size size = MediaQuery.of(context).size;
 //     return Scaffold(
-//       appBar: AppBar(
-//         elevation: 0,
-//         backgroundColor: Colors.transparent,
-//         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
+//       body: IndexedStack(
+//         index: index,
+//         children: [
+//           HomePage(size: size),
+//           ProfilePage(size:size)
+//         ],
 //       ),
-//       backgroundColor: Theme.of(context).colorScheme.background,
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: createNote,
-//         backgroundColor: Theme.of(context).colorScheme.secondary,
-//         child: Icon(Icons.add, color: Theme.of(context).colorScheme.inversePrimary,
+//       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+//       floatingActionButton:ElevatedButton(
+//         onPressed: () {  },
+//         style: ElevatedButton.styleFrom(
+//             elevation: 8,
+//             shadowColor: Colors.indigoAccent,
+//             backgroundColor: Colors.indigoAccent,
+//             shape: RoundedRectangleBorder(
+//                 borderRadius: BorderRadius.circular(kDefaul,verical: kDefault / 2)
+//             )
+//         ),
+//         child: const Padding(
+//           padding: EdgeInsets.symmetric(horizontal:kDefault / 6,vertical: kDefault / 1.2),
+//           child: Icon(Icons.add),
 //         ),
 //       ),
-//       body:
-//       Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
+//       bottomNavigationBar: buildNavbar(),
+//     );
+//   }
+//
+//   Container buildNavbar() {
+//     return Container(
+//       height: 86.0,
+//       padding: const EdgeInsets.only(
+//           right: kDefault,
+//           bottom: kDefault,
+//           left: kDefault,
+//           top: kDefault / 2
+//       ),
+//       decoration: BoxDecoration(
+//           color: Colors.white,
+//           boxShadow: [
+//             BoxShadow(
+//                 offset: const Offset(0, .3),
+//                 color: Colors.grey.withOpacity(.23),
+//                 blurRadius: 8.0
+//             )
+//           ]
+//       ),
+//       child:  Row(
+//         mainAxisAlignment: MainAxisAlignment.spaceAround,
 //         children: [
-//           Padding(
-//             padding: EdgeInsets.only(left: 25.0),
-//             child: Text(
-//               'RemindAll',
-//               style: GoogleFonts.dmSerifText(
-//                 fontSize:40,
-//                 color: Theme.of(context).colorScheme.inversePrimary,
-//               ),
+//           InkWell(
+//             onTap: (){
+//               setState(() {
+//                 index = 0;
+//               });
+//             },
+//             child: Column(
+//               children: [
+//                 Icon(Icons.home_filled,size: kCircle / 1.6,color: index == 0 ? Colors.blueAccent : null,),
+//                 Text("Home",style: TextStyle(color: index == 0 ? Colors.blueAccent : null),)
+//               ],
 //             ),
 //           ),
-//           Expanded(
-//             child: ListView.builder(
-//               itemCount: currentNotes.length,
-//               itemBuilder: (context, index) {
-//                 final note = currentNotes[index];
-//                 return Padding(
-//                   padding: const EdgeInsets.symmetric(vertical: 5.0),
-//                   child: Slidable(
-//                     endActionPane: ActionPane(
-//                       motion: const StretchMotion(),
-//                       children: [
-//                         SlidableAction(
-//                           onPressed: (context) => updateNote(context, note),
-//                           icon: Icons.edit,
-//                           backgroundColor: Colors.green,
-//                         ),
-//                         SlidableAction(
-//                           onPressed: (context) => deleteNote(context, note.id),
-//                           icon: Icons.delete,
-//                           backgroundColor: Colors.red,
-//                         ),
-//                       ],
-//                     ),
-//                     child: Stack(
-//                       children: [
-//                         ListTile(
-//                           title: Text(
-//                             note.text,
-//                             style: TextStyle(
-//                               color: Theme.of(context).colorScheme.inversePrimary,
-//                             ),
-//                           ),
-//                           trailing: SizedBox(), // Пустой SizedBox для выравнивания текста
-//                         ),
-//                         Positioned(
-//                           right: 0, // Выравниваем анимацию справа
-//                           child: Lottie.network(
-//                             "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
-//                             width: 50,
-//                             height: 50,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                 );
-//               },
+//           InkWell(
+//             onTap: (){
+//               setState(() {
+//                 index = 1;
+//               });
+//             },
+//             child: Column(
+//               children: [
+//                 Icon(Icons.auto_graph_sharp,size: kCircle / 1.6,color: index == 1 ? Colors.blueAccent : null,),
+//                 Text("Profile",style: TextStyle(color: index == 1 ? Colors.blueAccent : null),)
+//               ],
 //             ),
-//           ),
+//           )
 //         ],
 //       ),
 //     );
