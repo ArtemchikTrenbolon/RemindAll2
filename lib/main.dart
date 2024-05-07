@@ -12,11 +12,14 @@ import 'package:flutter_app3/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app3/main.dart';
 
+import 'api/firebase_api.dart';
+
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await NoteDataBase.initialize();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseApi().initNotification();
 
 
   runApp(

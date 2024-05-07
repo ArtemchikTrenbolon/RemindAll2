@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_app3/components/my_button.dart';
 import 'package:flutter_app3/components/my_textfiled.dart';
+import 'package:flutter_app3/pages/forgot_password_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -157,10 +158,22 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(
-                        'Забыли пароль?',
-                        style: TextStyle(
-                          color: Colors.grey[600],
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) {
+                                    return ForgotPasswordPage();
+                                  }
+                              ),
+                          );
+                        },
+                        child: Text(
+                          'Забыли пароль?',
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
                         ),
                       ),
                     ],

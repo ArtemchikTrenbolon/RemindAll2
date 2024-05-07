@@ -37,6 +37,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     });
   }
 
+  void _showDatePicker() {
+    showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2099),
+    );
+  }
+
   void openNoteBox({String? docID, String? initialText}) {
     String buttonText = docID == null ? "Создать" : "Изменить";
     String dialogTitle = docID == null ? "Создать заметку" : "Изменить заметку";
