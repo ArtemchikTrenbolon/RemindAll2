@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app3/main.dart';
 
 import 'api/firebase_api.dart';
+import 'components/add_notes.dart';
 
 
 void main() async{
@@ -44,8 +45,8 @@ class MyApp extends StatelessWidget{
       home:  AuthPage(),
       theme: Provider.of<ThemeProvider>(context).themeData,
       routes: {
-        '/firstpage': (context) => MainPage(),
-        '/homepage': (context) => MainPage(),
+        // '/firstpage': (context) => MainPage(),
+        // '/homepage': (context) => MainPage(),
         '/eventpage': (context) => EventPage(),
         '/settingspage': (context) => SettingPage(),
         '/profilepage': (context) => ProfilePage(),

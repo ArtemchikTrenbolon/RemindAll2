@@ -1,7 +1,11 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/components/drawer.dart';
+import 'package:flutter_app3/pages/event_page.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,6 +31,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final TextEditingController textController = TextEditingController();
   final FirestoreService firestoreService = FirestoreService();
   late final AnimationController _controller = AnimationController(vsync: this);
+
+
 
   @override
   void initState() {
@@ -104,18 +110,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         foregroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        shape: CircleBorder(),
-        onPressed: openNoteBox,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        child: Icon(
-          Icons.add,
-          color: Theme.of(context).colorScheme.inversePrimary,
-        ),
-      ),
       drawer: MyDrawer(),
-      body: Column(
+      body:
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
