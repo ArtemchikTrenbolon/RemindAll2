@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:intl/intl.dart';
 
 class EventPage extends StatefulWidget {
@@ -17,8 +18,16 @@ class _EventPageState extends State<EventPage> {
   DateTime selectedDate = DateTime.now();
 
   List<String> myCategoriesIcons = [
-
+    "food",
+    "health",
+    "education",
+    "event",
+    "finance",
+    "work",
+    "home"
   ];
+
+
 
   @override
   void initState() {
@@ -89,6 +98,8 @@ class _EventPageState extends State<EventPage> {
                             context: context,
                             builder: (ctx) {
                               bool isExpended = false;
+                              String iconSelected = '';
+                              Color categoryColor = Colors.white;
                               return StatefulBuilder(
                                 builder: (context, setState) {
 
@@ -154,34 +165,98 @@ class _EventPageState extends State<EventPage> {
                                               bottom: Radius.circular(12)
                                             ),
                                           ),
-                                          child: GridView.builder(
-                                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 3
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: GridView.builder(
+                                              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                                                  crossAxisCount: 3,
+                                                  mainAxisSpacing: 5,
+                                                  crossAxisSpacing: 5
+                                              ),
+                                                itemCount: myCategoriesIcons.length,
+                                                itemBuilder: (context, int i) {
+                                                    return GestureDetector(
+                                                      onTap: () {
+                                                        setState((){
+                                                          iconSelected = myCategoriesIcons[i];
+                                                        });
+                                                      },
+                                                      child: Container(
+                                                        width: 50,
+                                                        height: 50,
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            width: 3,
+                                                            color: iconSelected == myCategoriesIcons[i]
+                                                                ? Colors.green
+                                                                : Colors.grey
+                                                          ),
+                                                          borderRadius: BorderRadius.circular(12),
+                                                          image: DecorationImage(
+                                                            image: AssetImage(
+                                                                'icons/${myCategoriesIcons[i]}.png'
+                                                            )
+                                                          )
+                                                        ),
+                                                      ),
+                                                    );
+                                                }
                                             ),
-                                              itemCount: myCategoriesIcons.length,
-                                              itemBuilder: (context, int i) {
-                                                  return Container(
-                                                    width: 50,
-                                                    height: 50,
-                                                    decoration: BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                            'icons/${myCategoriesIcons[i]}.png'
-                                                        )
-                                                      )
-                                                    ),
-                                                  );
-                                              }
                                           ),
                                         )
                                         : Container(),
                                         const SizedBox(height: 16),
                                         TextFormField(
+                                          onTap: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (ctx2) {
+                                              return AlertDialog(
+                                                content: Column(
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    ColorPicker(
+                                                      pickerColor: categoryColor,
+                                                      onColorChanged: (value) {
+                                                        setState(() {
+                                                          categoryColor = value;
+                                                        });
+                                                      },
+                                                    ),
+                                                    SizedBox(
+                                                      width: double.infinity,
+                                                      height: 50,
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          Navigator.pop(ctx2);
+                                                        },
+                                                        style: TextButton.styleFrom(
+                                                            backgroundColor: Colors.black,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius: BorderRadius.circular(12)
+                                                            )
+                                                        ),
+                                                        child: Text(
+                                                          "Ок",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              );
+                                              }
+                                            );
+                                          },
                                           textAlignVertical: TextAlignVertical.center,
+                                          readOnly: true,
                                           decoration: InputDecoration(
                                               isDense: true,
                                               filled: true,
-                                              fillColor: Colors.white,
+                                              fillColor: categoryColor,
                                               hintText: "Цвет",
                                               border: OutlineInputBorder(
                                                   borderRadius: BorderRadius.circular(20),
@@ -189,6 +264,30 @@ class _EventPageState extends State<EventPage> {
                                               )
                                           ),
                                         ),
+                                        const SizedBox(height: 16),
+                                        SizedBox(
+                                          width: double.infinity,
+                                          height: kToolbarHeight,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              // Create Category Object and Pop
+                                              Navigator.pop(context);
+                                            },
+                                            style: TextButton.styleFrom(
+                                                backgroundColor: Colors.black,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(12)
+                                                )
+                                            ),
+                                            child: Text(
+                                              "Сохранить",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                   ),

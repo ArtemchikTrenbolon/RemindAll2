@@ -86,9 +86,11 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(height: 25),
 
                 Text(
-                  'Hello again!',
-                  style: GoogleFonts.bebasNeue(
+                  'Здравствуйте!',
+                  style: TextStyle(
+                    fontFamily: 'BebasNeue_cyrilic',
                     fontSize: 36,
+                    fontWeight:FontWeight.normal
                   ),
                 ),
 

@@ -106,10 +106,13 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 15),
 
                   Text(
-                    'Let\`s create an account for you!',
-                    style: GoogleFonts.bebasNeue(
-                      fontSize: 28,
+                    'Давайте создадим для вас аккаунт!',
+                    style: TextStyle(
+                        fontFamily: 'BebasNeue_cyrilic',
+                        fontSize: 33,
+                        fontWeight:FontWeight.normal,
                     ),
+                    textAlign: TextAlign.center,
                   ),
 
                   SizedBox(height: 10),
