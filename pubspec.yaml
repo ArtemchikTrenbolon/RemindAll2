@@ -52,6 +52,13 @@ dependencies:
   cached_network_image: ^3.3.1
   intl: ^0.19.0
   flutter_colorpicker: ^1.0.3
+  bloc: ^8.1.4
+  equatable: ^2.0.5
+  uuid: ^4.4.0
+  font_awesome_flutter: ^10.7.0
+  table_calendar: ^3.1.1
+  note_repository:
+    path: packages/note_repositrory
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +73,7 @@ flutter_icons:
   flutter_lints: ^3.0.0
   isar_generator: ^3.1.0+1
   build_runner: ^2.4.9
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
