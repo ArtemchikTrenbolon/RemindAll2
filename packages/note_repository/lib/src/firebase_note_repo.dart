@@ -8,7 +8,7 @@ class FirebaseNoteRepo implements NoteRepository {
 
 
   @override
-  Future<void> createCategory(Category category) async {
+  Future<void> createCategory(RepositoryCategory category) async {
     try {
       await categoryCollection
           .doc(category.categoryId)
@@ -20,12 +20,12 @@ class FirebaseNoteRepo implements NoteRepository {
   }
 
   @override
-  Future<List<Category>> getCategory() async {
+  Future<List<RepositoryCategory>> getCategory() async {
     try {
       return await categoryCollection
           .get()
           .then((value) => value.docs.map((e) =>
-          Category.fromEntity(CategoryEntity.fromDocument(e.data()))
+          RepositoryCategory.fromEntity(CategoryEntity.fromDocument(e.data()))
       ).toList());
     } catch (e) {
       log(e.toString());
@@ -36,8 +36,8 @@ class FirebaseNoteRepo implements NoteRepository {
   @override
   Future<void> createNote(Note note) async {
     try {
-      await NoteCollection
-          .doc(note.noteId)
+      await noteCollection
+          .doc(note.expenseId)
           .set(note.toEntity().toDocument());
     } catch (e) {
       log(e.toString());
@@ -46,7 +46,7 @@ class FirebaseNoteRepo implements NoteRepository {
   }
 
   @override
-  Future<List<Note>> getNotes() async {
+  Future<List<Note>> getNote() async {
     try {
       return await noteCollection
           .get()

@@ -5,8 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_app3/components/user_profile.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:lottie/lottie.dart';
+import 'package:note_repository/note_repository.dart';
+import 'package:provider/provider.dart';
 
 import '../../../models/firestore.dart';
 import '../../../pages/profile_page.dart';
@@ -14,6 +17,7 @@ import '../../../pages/setting_page.dart';
 
 
 class MainScreen extends StatefulWidget{
+  // final List<Note> note;
   const MainScreen({Key? key});
 
   @override
@@ -21,20 +25,25 @@ class MainScreen extends StatefulWidget{
 }
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
+  late UserProfile userProfile;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final TextEditingController textController = TextEditingController();
   final FirestoreService firestoreService = FirestoreService();
   late final AnimationController _controller = AnimationController(vsync: this);
 
+
+
   @override
   void initState() {
     super.initState();
+    userProfile = Provider.of<UserProfile>(context, listen: false);
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         _controller.repeat();
       }
     });
   }
+
 
   void openNoteBox({String? docID, String? initialText}) {
     String buttonText = docID == null ? "Создать" : "Изменить";
@@ -133,7 +142,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             ),
                           ),
                           Text(
-                            "Danil",
+                            userProfile.userName,
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

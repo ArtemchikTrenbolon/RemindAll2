@@ -1,22 +1,21 @@
-// import 'package:bloc/bloc.dart';
-// import 'package:equatable/equatable.dart';
-// import 'package:note_repository/note_repository.dart';
-//
-// part 'get_categories_event.dart';
-// part 'get_categories_bloc.dart';
-//
-// class GetCategoriesBloc extends Bloc<GetCategoriesEvent, GetCategoriesState> {
-//   ExpenseRepository noteRepository;
-//
-//   GetCategoriesBloc(this.noteRepository) : super(GetCategoriesInitial()) {
-//     on<GetCategories>((event, emit) async {
-//       emit(GetCategoriesLoading());
-//       try {
-//         List<Category> categories = await noteRepository.getCategory();
-//         emit(GetCategoriesSuccess(categories));
-//       } catch (e) {
-//         emit(GetCategoriesFailure());
-//       }
-//     });
-//   }
-// }
+part of 'get_categories_bloc.dart';
+
+sealed class GetCategoriesState extends Equatable {
+  const GetCategoriesState();
+
+  @override
+  List<Object> get props => [];
+}
+
+final class GetCategoriesInitial extends GetCategoriesState {}
+
+final class GetCategoriesFailure extends GetCategoriesState {}
+final class GetCategoriesLoading extends GetCategoriesState {}
+final class GetCategoriesSuccess extends GetCategoriesState {
+  final List<RepositoryCategory> categories;
+
+  const GetCategoriesSuccess(this.categories);
+
+  @override
+  List<Object> get props => [categories];
+}

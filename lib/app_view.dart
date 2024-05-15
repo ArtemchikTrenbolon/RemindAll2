@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app3/pages/first_page.dart';
+import 'package:flutter_app3/screen/home/blocs/get_note_bloc.dart';
 import 'package:flutter_app3/screen/home/views/home_screen.dart';
 import 'package:flutter_app3/theme/theme_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_repository/note_repository.dart';
 import 'package:provider/provider.dart';
 
 class MyAppView extends StatelessWidget {
@@ -13,7 +16,12 @@ class MyAppView extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "RemindAll",
       theme: lightMode, // Используем светлую тему по умолчанию
-      home: HomeScreen(),
+      home: BlocProvider(
+        create: (context) => GetNoteBloc(
+          FirebaseNoteRepo()
+        )..add(GetNote()),
+        child: HomeScreen(),
+      ),
     );
   }
 }

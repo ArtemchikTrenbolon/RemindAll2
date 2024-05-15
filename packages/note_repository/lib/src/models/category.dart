@@ -4,7 +4,7 @@ class RepositoryCategory {
   String categoryId;
   String name;
   String icon;
-  String color;
+  int color;
 
   RepositoryCategory({
     required this.categoryId,
@@ -17,7 +17,7 @@ class RepositoryCategory {
       categoryId: '',
       name: '',
       icon: '',
-      color: '',
+      color: 0,
   );
 
   CategoryEntity toEntity() {

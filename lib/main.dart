@@ -9,6 +9,7 @@ import 'package:flutter_app3/pages/home_page.dart';
 import 'package:flutter_app3/pages/login_or_register_page.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
+import 'package:flutter_app3/simple_bloc_observer.dart';
 import 'package:flutter_app3/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app3/main.dart';
@@ -61,20 +62,22 @@ import 'package:flutter/material.dart';
 
 import 'api/firebase_api.dart';
 import 'app.dart';
+import 'components/user_profile.dart';
 import 'firebase_options.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // Bloc.observer = SimpleBlocObserver();
+  Bloc.observer = SimpleBlocObserver();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await FirebaseApi().initNotification();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => NoteDataBase()),
-        ChangeNotifierProvider(create: (context) => ThemeProvider())
+        ChangeNotifierProvider(create: (context) => ThemeProvider()),
+        ChangeNotifierProvider(create: (context) => UserProfile()),
       ],
       child: const MyApp(),
     ),
