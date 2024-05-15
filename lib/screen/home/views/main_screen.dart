@@ -1,97 +1,17 @@
-import 'dart:math';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_app3/components/user_profile.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:lottie/lottie.dart';
+import 'package:intl/intl.dart';
 import 'package:note_repository/note_repository.dart';
-import 'package:provider/provider.dart';
-
 import '../../../models/firestore.dart';
 import '../../../pages/profile_page.dart';
 import '../../../pages/setting_page.dart';
 
+class MainScreen extends StatelessWidget {
+  // final UserProfile userProfile;
+  final List<Note> note;
 
-class MainScreen extends StatefulWidget{
-  // final List<Note> note;
-  const MainScreen({Key? key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  late UserProfile userProfile;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController textController = TextEditingController();
-  final FirestoreService firestoreService = FirestoreService();
-  late final AnimationController _controller = AnimationController(vsync: this);
-
-
-
-  @override
-  void initState() {
-    super.initState();
-    userProfile = Provider.of<UserProfile>(context, listen: false);
-    _controller.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        _controller.repeat();
-      }
-    });
-  }
-
-
-  void openNoteBox({String? docID, String? initialText}) {
-    String buttonText = docID == null ? "Создать" : "Изменить";
-    String dialogTitle = docID == null ? "Создать заметку" : "Изменить заметку";
-    textController.text = initialText ?? '';
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          dialogTitle,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.inversePrimary,
-          ),
-        ),
-        content: TextField(
-          controller: textController,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.inversePrimary,
-          ),
-        ),
-        actions: [
-          MaterialButton(
-            onPressed: () {
-              Navigator.pop(context);
-              textController.clear();
-            },
-            child: const Text("Закрыть"),
-          ),
-          MaterialButton(
-            onPressed: () async {
-              final user = _auth.currentUser;
-              if (user != null) {
-                if (initialText == null) {
-                  await firestoreService.addNote(user.uid, textController.text);
-                } else {
-                  await firestoreService.updateNote(user.uid, docID!, textController.text);
-                }
-                textController.clear();
-                Navigator.pop(context);
-              }
-            },
-            child: Text(buttonText),
-          )
-        ],
-      ),
-    );
-  }
-
+  const MainScreen(this.note, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +23,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                GestureDetector( // Добавляем GestureDetector для навигации на страницу профиля
+                GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -142,7 +62,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                             ),
                           ),
                           Text(
-                            userProfile.userName,
+                            "Danil",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -160,7 +80,10 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                     MaterialPageRoute(builder: (context) => SettingPage()),
                   );
                 },
-                    icon: const Icon(CupertinoIcons.settings)),
+                    icon:  Icon(CupertinoIcons.settings,
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                    )
+                ),
               ],
             ),
 
@@ -177,90 +100,166 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 ),
               ],
             ),
-
-            SizedBox(height: 15),
+            const SizedBox(height: 20),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: _auth.currentUser != null
-                    ? firestoreService.getNotesStream(_auth.currentUser!.uid)
-                    : null,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    List notesList = snapshot.data!.docs;
-                    return ListView.builder(
-                      itemExtent: 75,
-                      itemCount: notesList.length,
-                      itemBuilder: (context, index) {
-                        DocumentSnapshot document = notesList[index];
-                        String docID = document.id;
-
-                        Map<String, dynamic> data =
-                        document.data() as Map<String, dynamic>;
-                        String noteText = data['note'];
-
-                        return Slidable(
-                          endActionPane: ActionPane(
-                            motion: const StretchMotion(),
+                child: ListView.builder(
+                  itemCount: note.length,
+                  itemBuilder: (context, int i) {
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 16.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(12)
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SlidableAction(
-                                borderRadius: BorderRadius.circular(8),
-                                onPressed: (context) => openNoteBox(
-                                    docID: docID, initialText: noteText),
-                                icon: Icons.edit,
-                                backgroundColor: Colors.green,
+                              Row(
+                                children: [
+                                  Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        width: 50,
+                                        height: 50,
+                                        decoration: BoxDecoration(
+                                            color: Color(note[i].category.color),
+                                            shape: BoxShape.circle
+                                        ),
+                                      ),
+                                      Image.asset(
+                                        "icons/${note[i].category.icon}.png",
+                                        scale: 2,
+                                        color: Colors.white,
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(width: 12),
+                                  Text(
+                                      note[i].category.name,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Theme.of(context).colorScheme.inversePrimary,
+                                          fontWeight: FontWeight.w500
+                                      )
+                                  ),
+                                ],
                               ),
-                              SlidableAction(
-                                borderRadius: BorderRadius.circular(8),
-                                onPressed: (context) => firestoreService
-                                    .deleteNote(docID, _auth.currentUser!.uid),
-                                icon: Icons.delete,
-                                backgroundColor: Colors.red,
-                              ),
+                              Column(
+                                children: [
+                                  Text(
+                                      note[i].category.name,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          fontWeight: FontWeight.w400
+                                      )
+                                  ),
+                                  Text(
+                                      DateFormat("dd/MM/yyyy").format(note[i].date),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Theme.of(context).colorScheme.secondary,
+                                          fontWeight: FontWeight.w400
+                                      )
+                                  ),
+                                ],
+                              )
                             ],
                           ),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            margin: EdgeInsets.only(
-                            ),
-                            child: ListTile(
-                              title: Text(
-                                noteText,
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .inversePrimary,
-                                ),
-                              ),
-                              trailing: SizedBox(
-                                width: 50,
-                                height: 50,
-                                child: _controller != null
-                                    ? Lottie.network(
-                                  "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
-                                  controller: _controller,
-                                  onLoaded: (composition) {
-                                    _controller
-                                      ..duration =
-                                          composition.duration
-                                      ..forward();
-                                  },
-                                )
-                                    : Container(),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
+                        ),
+                      ),
                     );
-                  } else {
-                    return const Text("No notes...");
-                  }
-                },
-              ),
+                  },
+                )
             ),
+
+            // SizedBox(height: 15),
+            // Expanded(
+            //   child: StreamBuilder<QuerySnapshot>(
+            //     stream: _auth.currentUser != null
+            //         ? firestoreService.getNotesStream(_auth.currentUser!.uid)
+            //         : null,
+            //     builder: (context, snapshot) {
+            //       if (snapshot.hasData) {
+            //         List notesList = snapshot.data!.docs;
+            //         return ListView.builder(
+            //           itemExtent: 75,
+            //           itemCount: notesList.length,
+            //           itemBuilder: (context, index) {
+            //             DocumentSnapshot document = notesList[index];
+            //             String docID = document.id;
+            //
+            //             Map<String, dynamic> data =
+            //             document.data() as Map<String, dynamic>;
+            //             String noteText = data['note'];
+            //
+            //             return Slidable(
+            //               endActionPane: ActionPane(
+            //                 motion: const StretchMotion(),
+            //                 children: [
+            //                   SlidableAction(
+            //                     borderRadius: BorderRadius.circular(8),
+            //                     onPressed: (context) => openNoteBox(
+            //                         docID: docID, initialText: noteText),
+            //                     icon: Icons.edit,
+            //                     backgroundColor: Colors.green,
+            //                   ),
+            //                   SlidableAction(
+            //                     borderRadius: BorderRadius.circular(8),
+            //                     onPressed: (context) => firestoreService
+            //                         .deleteNote(docID, _auth.currentUser!.uid),
+            //                     icon: Icons.delete,
+            //                     backgroundColor: Colors.red,
+            //                   ),
+            //                 ],
+            //               ),
+            //               child: Container(
+            //                 decoration: BoxDecoration(
+            //                   color: Theme.of(context).colorScheme.primary,
+            //                   borderRadius: BorderRadius.circular(8),
+            //                 ),
+            //                 margin: EdgeInsets.only(
+            //                 ),
+            //                 child: ListTile(
+            //                   title: Text(
+            //                     noteText,
+            //                     style: TextStyle(
+            //                       color: Theme.of(context)
+            //                           .colorScheme
+            //                           .inversePrimary,
+            //                     ),
+            //                   ),
+            //                   trailing: SizedBox(
+            //                     width: 50,
+            //                     height: 50,
+            //                     child: _controller != null
+            //                         ? Lottie.network(
+            //                       "https://lottie.host/ce63bd6d-8a18-4018-bba7-ab874fa7ea23/YnNHhvo830.json",
+            //                       controller: _controller,
+            //                       onLoaded: (composition) {
+            //                         _controller
+            //                           ..duration =
+            //                               composition.duration
+            //                           ..forward();
+            //                       },
+            //                     )
+            //                         : Container(),
+            //                   ),
+            //                 ),
+            //               ),
+            //             );
+            //           },
+            //         );
+            //       } else {
+            //         return const Text("No notes...");
+            //       }
+            //     },
+            //   ),
+            // ),
           ],
         ),
       ),

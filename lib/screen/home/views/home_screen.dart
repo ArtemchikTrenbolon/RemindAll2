@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app3/screen/home/blocs/get_note_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_app3/components/add_notes.dart';
 import 'package:flutter_app3/components/blocs/create_category_bloc/create_category_bloc.dart';
@@ -26,6 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<GetNoteBloc, GetNoteState>(
+  builder: (context, state) {
+    if(state is GetNoteSuccess){
     return Scaffold(
       bottomNavigationBar: ClipRRect(
         borderRadius: BorderRadius.vertical(
@@ -117,8 +121,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: index == 0
-          ? MainScreen()
+          ? MainScreen(state.note)
           : EventScreen()
     );
+  }
+    else {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+  }
+  );
   }
 }

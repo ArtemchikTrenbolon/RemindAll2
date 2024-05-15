@@ -9,8 +9,11 @@ import 'package:flutter_app3/pages/home_page.dart';
 import 'package:flutter_app3/pages/login_or_register_page.dart';
 import 'package:flutter_app3/pages/profile_page.dart';
 import 'package:flutter_app3/pages/setting_page.dart';
+import 'package:flutter_app3/screen/home/blocs/get_note_bloc.dart';
 import 'package:flutter_app3/simple_bloc_observer.dart';
 import 'package:flutter_app3/theme/theme_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:note_repository/note_repository.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app3/main.dart';
 
@@ -91,7 +94,12 @@ class MyApp extends StatelessWidget{
   Widget build(BuildContext context){
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:  AuthPage(),
+      home:  BlocProvider(
+        create: (context) => GetNoteBloc(
+            FirebaseNoteRepo()
+        )..add(GetNote()),
+        child: AuthPage(),
+      ),
       theme: Provider.of<ThemeProvider>(context).themeData,
       routes: {
         // '/firstpage': (context) => MainPage(),

@@ -4,6 +4,7 @@ class CategoryEntity {
   String icon;
   int color;
 
+
   CategoryEntity({
     required this.categoryId,
     required this.name,

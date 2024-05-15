@@ -181,7 +181,7 @@ class _EventPageState extends State<EventPage> {
                                 },
                                 leading: Image.asset(
                                   "icons/${state.categories[i].icon}.png",
-                                  scale: 15,
+                                  scale: 2,
                                 ),
                                 title: Text(
                                     "${state.categories[i].name}"
