@@ -144,11 +144,10 @@ Future getCategoryCreation(BuildContext context) {
                                                     ? Colors.green
                                                     : Colors.grey
                                             ),
-                                            borderRadius: BorderRadius.circular(
-                                                12),
+                                            borderRadius: BorderRadius.circular(12),
                                             image: DecorationImage(
                                                 image: AssetImage(
-                                                    'icons/${myCategoriesIcons[i]}.png'
+                                                    'icons/${myCategoriesIcons[i]}.png',
                                                 )
                                             )
                                         ),

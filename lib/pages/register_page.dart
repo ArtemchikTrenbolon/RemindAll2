@@ -132,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             obscureText: false,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Email',
+                              hintText: 'Почта',
                             ),
                           )
                       ),
@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             obscureText: true,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Password',
+                              hintText: 'Пароль',
                             ),
                           )
                       ),
@@ -180,7 +180,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             obscureText: true,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Confirm Password',
+                              hintText: 'Подтвердите пароль',
                             ),
                           )
                       ),

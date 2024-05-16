@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                             obscureText: false,
                             decoration: InputDecoration(
                               border: InputBorder.none,
-                              hintText: 'Email',
+                              hintText: 'Почта',
                             ),
                           )
                   ),
@@ -146,7 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                           obscureText: true,
                           decoration: InputDecoration(
                             border: InputBorder.none,
-                            hintText: 'Password',
+                            hintText: 'Пароль',
                           ),
                         )
                     ),

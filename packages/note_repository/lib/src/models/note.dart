@@ -5,20 +5,20 @@ class Note {
   String expenseId;
   RepositoryCategory category;
   DateTime date;
-  // String nameNote;
+  String nameNote;
 
   Note({
     required this.expenseId,
     required this.category,
     required this.date,
-    // required this.nameNote,
+    required this.nameNote,
   });
 
   static final empty = Note(
     expenseId: '',
     category: RepositoryCategory.empty,
     date: DateTime.now(),
-    // nameNote: '',
+    nameNote: '',
   );
 
   NoteEntity toEntity() {
@@ -26,7 +26,7 @@ class Note {
       expenseId: expenseId,
       category: category,
       date: date,
-      // nameNote: nameNote,
+      nameNote: nameNote,
     );
   }
 
@@ -35,7 +35,7 @@ class Note {
       expenseId: entity.expenseId,
       category: entity.category,
       date: entity.date,
-      // nameNote: entity.nameNote,
+      nameNote: entity.nameNote,
     );
   }
 }

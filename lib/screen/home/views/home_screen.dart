@@ -75,10 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         shape: CircleBorder(),
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async{
+          var newNote = await Navigator.push(
               context,
-              MaterialPageRoute<void>(
+              MaterialPageRoute<Note>(
                   builder: (BuildContext context) => MultiBlocProvider(
                     providers: [
                       BlocProvider(
@@ -99,6 +99,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
               ),
           );
+          if(newNote != null) {
+            setState(() {
+              state.note.add(newNote);
+            });
+          }
+
         },
         backgroundColor: Theme.of(context).colorScheme.secondary,
         child: Container(

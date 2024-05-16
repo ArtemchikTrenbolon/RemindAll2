@@ -6,13 +6,13 @@ class NoteEntity {
   String expenseId;
   RepositoryCategory category;
   DateTime date;
-  // String nameNote;
+  String nameNote;
 
   NoteEntity({
     required this.expenseId,
     required this.category,
     required this.date,
-    // required this.nameNote,
+    required this.nameNote,
   });
 
   Map<String, Object?> toDocument() {
@@ -20,7 +20,7 @@ class NoteEntity {
       'expenseId': expenseId,
       'category': category.toEntity().toDocument(),
       'date': date,
-      // 'nameNote': nameNote,
+      'nameNote': nameNote,
     };
   }
 
@@ -29,7 +29,7 @@ class NoteEntity {
       expenseId: doc['expenseId'],
       category: RepositoryCategory.fromEntity(CategoryEntity.fromDocument(doc['category'])),
       date: (doc['date'] as Timestamp).toDate(),
-      // nameNote: doc['nameNote'],
+      nameNote: doc['nameNote'],
     );
   }
 }

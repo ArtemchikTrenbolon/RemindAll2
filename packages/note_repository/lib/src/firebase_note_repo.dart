@@ -59,4 +59,27 @@ class FirebaseNoteRepo implements NoteRepository {
     }
   }
 
+  @override
+  Future<void> updateNote(String userId, String docID, String newNote) {
+    return FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .collection('notes')
+        .doc(docID)
+        .update({
+      'note': newNote,
+      'timestamp': Timestamp.now(),
+    });
+  }
+
+  @override
+  Future<void> deleteNote(String docID, String userId) {
+    return FirebaseFirestore.instance
+        .collection('Users')
+        .doc(userId)
+        .collection('notes')
+        .doc(docID)
+        .delete();
+  }
+
 }

@@ -51,7 +51,7 @@ class _EventPageState extends State<EventPage> {
     return BlocListener<CreateNoteBloc, CreateNoteState>(
   listener: (context, state) {
     if(state is CreateNoteSuccess) {
-      Navigator.pop(context);
+      Navigator.pop(context, note);
     }
     else if(state is CreateNoteLoading) {
       setState(() {
@@ -79,6 +79,7 @@ class _EventPageState extends State<EventPage> {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.w500,
+                color: Theme.of(context).colorScheme.inversePrimary,
               ),
             ),
             const SizedBox(height: 16),
@@ -98,11 +99,15 @@ class _EventPageState extends State<EventPage> {
                         .background,
                     prefixIcon: Icon(
                         Icons.edit,
-                        size: 20
+                        size: 20,
+                        color: Theme.of(context).colorScheme.inversePrimary,
                     ),
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none
+                        borderSide: BorderSide(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 2.0,
+                        ),
                     )
                 ),
               ),
@@ -113,43 +118,51 @@ class _EventPageState extends State<EventPage> {
               controller: categoryController,
               textAlignVertical: TextAlignVertical.center,
               readOnly: true,
-              onTap: () {
+              onTap: () async {
+                // Ваш код для выбора категории
               },
               decoration: InputDecoration(
-                  filled: true,
-                  fillColor:  note.category == RepositoryCategory.empty
-                  ? Theme.of(context).colorScheme.background
-                  : Color(note.category.color),
-                  prefixIcon: note.category == RepositoryCategory.empty
-                  ? Icon(
-                    Icons.list,
+                filled: true,
+                fillColor: note.category == RepositoryCategory.empty
+                    ? Theme.of(context).colorScheme.background
+                    : Color(note.category.color),
+                prefixIcon: note.category == RepositoryCategory.empty
+                    ? Icon(
+                  Icons.list,
+                  size: 20,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                )
+                    : Image.asset(
+                  "icons/${note.category.icon}.png",
+                  scale: 3,
+                  color: Theme.of(context).colorScheme.inversePrimary,
+                ),
+                suffixIcon: IconButton(
+                  onPressed: () async {
+                    var newCategory = await getCategoryCreation(context);
+                    setState(() {
+                      // Обновляем состояние, когда категория выбрана
+                      state.categories.insert(0, newCategory);
+                      note.category = newCategory; // Устанавливаем выбранную категорию
+                      categoryController.text = newCategory.name; // Обновляем текст в поле категории
+                    });
+                  },
+                  icon: Icon(
+                    Icons.add,
                     size: 20,
-                  )
-                  : Image.asset(
-                    "icons/${note.category.icon}.png",
-                    scale: 15,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      var newCategory = await getCategoryCreation(context);
-                      setState(() {
-                        state.categories.insert(0, newCategory);
-                      });
-                    },
-                    icon: Icon(
-                      Icons.add,
-                      size: 20,
-                    ),
+                ),
+                hintText: "Категории",
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(12),
                   ),
-                  hintText: "Категории",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(12)
-                      ),
-                      borderSide: BorderSide.none
-                  )
+                  borderSide: BorderSide.none,
+                ),
               ),
             ),
+
             Container(
               height: 200,
               width: MediaQuery
@@ -181,10 +194,12 @@ class _EventPageState extends State<EventPage> {
                                 },
                                 leading: Image.asset(
                                   "icons/${state.categories[i].icon}.png",
-                                  scale: 2,
+                                  scale: 3,
+                                  color: Theme.of(context).colorScheme.inversePrimary,
                                 ),
                                 title: Text(
-                                    "${state.categories[i].name}"
+                                    "${state.categories[i].name}",
+                                  style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
                                 ),
                                 tileColor: Color(state.categories[i].color),
                                 shape: RoundedRectangleBorder(
@@ -206,7 +221,22 @@ class _EventPageState extends State<EventPage> {
                     context: context,
                     initialDate: note.date,
                     firstDate: DateTime.now(),
-                    lastDate: DateTime.now().add(Duration(days: 365))
+                    lastDate: DateTime.now().add(Duration(days: 365)),
+                    builder: (BuildContext context, Widget? child) {
+                  return Theme(
+                    data: ThemeData.dark().copyWith(
+                      // Установка цветов для кнопок и фона
+                      colorScheme: ColorScheme.dark(
+                        primary: Colors.deepPurple,
+                        onPrimary: Colors.white,
+                        surface: Theme.of(context).colorScheme.background,
+                        onSurface: Theme.of(context).colorScheme.inversePrimary,
+                      ),
+                      dialogBackgroundColor: Colors.blue[900], // Цвет фона диалога
+                    ),
+                    child: child!,
+                  );
+                },
                 );
 
                 if (newDate != null) {
@@ -227,6 +257,7 @@ class _EventPageState extends State<EventPage> {
                   prefixIcon: Icon(
                     Icons.access_time,
                     size: 20,
+                    color: Theme.of(context).colorScheme.inversePrimary,
                   ),
                   hintText: "Дата",
                   border: OutlineInputBorder(
@@ -234,6 +265,7 @@ class _EventPageState extends State<EventPage> {
                       borderSide: BorderSide.none
                   )
               ),
+              style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),
             ),
             const SizedBox(height: 32),
 
@@ -244,6 +276,9 @@ class _EventPageState extends State<EventPage> {
               ? Center(child: CircularProgressIndicator())
               : TextButton(
                 onPressed: () {
+                  setState(() {
+                    note.nameNote = notesController.text;
+                  });
                   context.read<CreateNoteBloc>().add(CreateNote(note));
                 },
                 style: TextButton.styleFrom(
