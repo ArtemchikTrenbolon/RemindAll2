@@ -60,26 +60,31 @@ class FirebaseNoteRepo implements NoteRepository {
   }
 
   @override
-  Future<void> updateNote(String userId, String docID, String newNote) {
-    return FirebaseFirestore.instance
-        .collection('Users')
-        .doc(userId)
-        .collection('notes')
-        .doc(docID)
-        .update({
-      'note': newNote,
-      'timestamp': Timestamp.now(),
-    });
+  Future<void> deleteNote(String expenseId) async {
+    try {
+      await noteCollection.doc(expenseId).delete();
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 
   @override
-  Future<void> deleteNote(String docID, String userId) {
-    return FirebaseFirestore.instance
-        .collection('Users')
-        .doc(userId)
-        .collection('notes')
-        .doc(docID)
-        .delete();
+  Future<void> updateNote(Note note) async {
+    try {
+      await noteCollection
+          .doc(note.expenseId)
+          .update(note.toEntity().toDocument());
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
   }
 
+  @override
+  Stream<List<Note>> getNoteStream() {
+    return noteCollection.snapshots().map((snapshot) =>
+        snapshot.docs.map((doc) => Note.fromEntity(NoteEntity.fromDocument(doc.data()))).toList()
+    );
+  }
 }

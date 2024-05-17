@@ -9,4 +9,8 @@ abstract class NoteRepository {
   Future<void> createNote(Note note);
 
   Future<List<Note>> getNote();
+
+  Future<void> deleteNote(String noteId);
+
+  Future<void> updateNote(Note note);
 }

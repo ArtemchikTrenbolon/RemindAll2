@@ -7,9 +7,8 @@ import 'package:note_repository/note_repository.dart';
 import '../../../models/firestore.dart';
 import '../../../pages/profile_page.dart';
 import '../../../pages/setting_page.dart';
-
+final FirebaseNoteRepo firebaseNoteRepo = FirebaseNoteRepo();
 class MainScreen extends StatelessWidget {
-  // final UserProfile userProfile;
   final List<Note> note;
 
 
@@ -17,6 +16,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    note.sort((a, b) => b.date.compareTo(a.date));
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
@@ -104,119 +104,139 @@ class MainScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             Expanded(
-                child: ListView.builder(
-                  itemCount: note.length,
-                  itemBuilder: (context, int i) {
-                    note.sort((a, b) => a.date.compareTo(b.date));
-                    return Slidable(
-                      endActionPane: ActionPane(
-                        motion: const StretchMotion(),
-                        children: [
-                          Container(
-                            width: 85,
-                            height: 100,
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 15.0),
-                              child: SlidableAction(
-                                borderRadius: BorderRadius.circular(8),
-                                onPressed: (context) {
-                                  // Реализуйте здесь вашу логику редактирования заметки
-                                  // Это может быть переход на страницу редактирования или что-то еще
-                                },
-                                icon: Icons.edit,
-                                backgroundColor: Colors.green,
+              child: StreamBuilder<List<Note>>(
+                stream: firebaseNoteRepo.getNoteStream(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Text('Error: ${snapshot.error}'),
+                    );
+                  } else {
+                    final notes = snapshot.data ?? [];
+                    return ListView.builder(
+                      itemCount: notes.length,
+                      itemBuilder: (context, int i) {
+                        return Slidable(
+                          endActionPane: ActionPane(
+                            motion: const StretchMotion(),
+                            extentRatio: 0.3,
+                            children: [
+                              Container(
+                                width: 100,
+                                height: 100,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: SlidableAction(
+                                    borderRadius: BorderRadius.circular(8),
+                                    onPressed: (context) async {
+                                      try {
+                                        await firebaseNoteRepo.deleteNote(notes[i].expenseId);
+                                      } catch (e) {
+                                        print('Error deleting note: $e');
+                                      }
+                                    },
+                                    icon: Icons.delete,
+                                    backgroundColor: Colors.red,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Container(
-                            width: 85,
-                            height: 100,
-                            child: Padding(
-                              padding: const EdgeInsets.only(bottom: 15.0),
-                              child: SlidableAction(
-                                borderRadius: BorderRadius.circular(8),
-                                onPressed: (context) {
-
-                                },
-                                icon: Icons.delete,
-                                backgroundColor: Colors.red,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(12),
+                            ],
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Stack(
-                                      alignment: Alignment.center,
-                                      children: [
-                                        Container(
-                                          width: 50,
-                                          height: 50,
-                                          decoration: BoxDecoration(
-                                            color: Color(note[i].category.color),
-                                            shape: BoxShape.circle,
-                                          ),
-                                        ),
-                                        Image.asset(
-                                          "icons/${note[i].category.icon}.png",
-                                          scale: 4,
-                                          color: Colors.white,
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(width: 12),
-                                    Text(
-                                      note[i].nameNote,
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).colorScheme.inversePrimary,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: GestureDetector(
+                              onTap: () {
+                                // Реализуйте здесь логику редактирования заметки
+                                // Например, переход на страницу редактирования
+                                // Navigator.push(
+                                //   context,
+                                //   MaterialPageRoute(builder: (context) => EditNotePage(note: notes[i])),
+                                // );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
-                                Column(
-                                  children: [
-                                    Text(
-                                      note[i].category.name,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context).colorScheme.secondary,
-                                        fontWeight: FontWeight.w400,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              Container(
+                                                width: 50,
+                                                height: 50,
+                                                decoration: BoxDecoration(
+                                                  color: Color(notes[i].category.color),
+                                                  shape: BoxShape.circle,
+                                                ),
+                                              ),
+                                              Image.asset(
+                                                "icons/${notes[i].category.icon}.png",
+                                                scale: 4,
+                                                color: Colors.white,
+                                              )
+                                            ],
+                                          ),
+                                          SizedBox(width: 12),
+                                          Text(
+                                            notes[i].nameNote,
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Theme.of(context).colorScheme.inversePrimary,
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ),
-                                    Text(
-                                      DateFormat("dd/MM/yyyy").format(note[i].date),
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Theme.of(context).colorScheme.secondary,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                      Column(
+                                        children: [
+                                          Text(
+                                            notes[i].category.name,
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context).colorScheme.secondary,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          Text(
+                                            DateFormat("dd/MM/yyyy").format(notes[i].date),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context).colorScheme.secondary,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                      ),
+                        );
+                      },
                     );
-                  },
-                ),
+                  }
+                },
+              ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
             // SizedBox(height: 15),
             // Expanded(
@@ -301,9 +321,4 @@ class MainScreen extends StatelessWidget {
             //     },
             //   ),
             // ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+
