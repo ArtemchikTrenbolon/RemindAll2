@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app3/pages/first_page.dart';
-import 'package:flutter_app3/screen/home/blocs/get_note_bloc.dart';
-import 'package:flutter_app3/screen/home/views/home_screen.dart';
-import 'package:flutter_app3/theme/theme_provider.dart';
+import 'package:RemindAll/pages/first_page.dart';
+import 'package:RemindAll/screen/home/blocs/get_note_bloc.dart';
+import 'package:RemindAll/screen/home/views/home_screen.dart';
+import 'package:RemindAll/theme/theme_provider.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note_repository/note_repository.dart';
 import 'package:provider/provider.dart';

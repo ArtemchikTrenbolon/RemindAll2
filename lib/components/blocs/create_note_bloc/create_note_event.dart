@@ -1,6 +1,6 @@
 part of 'create_note_bloc.dart';
 
-sealed class CreateNoteEvent extends Equatable {
+abstract class CreateNoteEvent extends Equatable {
   const CreateNoteEvent();
 
   @override
@@ -11,6 +11,15 @@ class CreateNote extends CreateNoteEvent {
   final Note note;
 
   const CreateNote(this.note);
+
+  @override
+  List<Object> get props => [note];
+}
+
+class UpdateNote extends CreateNoteEvent {
+  final Note note;
+
+  const UpdateNote(this.note);
 
   @override
   List<Object> get props => [note];

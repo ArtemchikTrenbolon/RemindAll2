@@ -6,8 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../models/note_database.dart';
-import 'package:flutter_app3/components/text_box.dart';
-import 'package:flutter_app3/theme/theme_provider.dart';
+import 'package:RemindAll/components/text_box.dart';
+import 'package:RemindAll/theme/theme_provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfilePage extends StatefulWidget {

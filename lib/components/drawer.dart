@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app3/components/drawer_tile.dart';
-import 'package:flutter_app3/pages/profile_page.dart';
-import 'package:flutter_app3/pages/setting_page.dart';
+import 'package:RemindAll/components/drawer_tile.dart';
+import 'package:RemindAll/pages/profile_page.dart';
+import 'package:RemindAll/pages/setting_page.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class MyDrawer extends StatelessWidget{

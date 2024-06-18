@@ -3,12 +3,12 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_app3/components/blocs/create_category_bloc/create_category_bloc.dart';
-// import 'package:flutter_app3/pages/event_page.dart';
-// import 'package:flutter_app3/pages/home_page.dart';
-// import 'package:flutter_app3/pages/login_page.dart';
-// import 'package:flutter_app3/pages/profile_page.dart';
-// import 'package:flutter_app3/pages/setting_page.dart';
+// import 'package:RemindAll/components/blocs/create_category_bloc/create_category_bloc.dart';
+// import 'package:RemindAll/pages/event_page.dart';
+// import 'package:RemindAll/pages/home_page.dart';
+// import 'package:RemindAll/pages/login_page.dart';
+// import 'package:RemindAll/pages/profile_page.dart';
+// import 'package:RemindAll/pages/setting_page.dart';
 // import 'package:note_repository/note_repository.dart';
 //
 // import '../components/add_notes.dart';

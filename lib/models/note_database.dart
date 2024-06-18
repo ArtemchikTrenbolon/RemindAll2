@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app3/models/note.dart';
+import 'package:RemindAll/models/note.dart';
 import 'package:isar/isar.dart';
 import 'package:path_provider/path_provider.dart';
 

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app3/components/user_profile.dart';
+import 'package:RemindAll/components/user_profile.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:note_repository/note_repository.dart';
+import '../../../components/edit_notes.dart';
 import '../../../models/firestore.dart';
 import '../../../pages/profile_page.dart';
 import '../../../pages/setting_page.dart';
@@ -150,12 +151,12 @@ class MainScreen extends StatelessWidget {
                             padding: const EdgeInsets.only(bottom: 16.0),
                             child: GestureDetector(
                               onTap: () {
-                                // Реализуйте здесь логику редактирования заметки
-                                // Например, переход на страницу редактирования
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => EditNotePage(note: notes[i])),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditPage(note: notes[i]),
+                                  ),
+                                );
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -176,15 +177,28 @@ class MainScreen extends StatelessWidget {
                                                 width: 50,
                                                 height: 50,
                                                 decoration: BoxDecoration(
-                                                  color: Color(notes[i].category.color),
                                                   shape: BoxShape.circle,
+                                                  color:  Color(notes[i].category.color)
+                                                       // Use white color if icon is null or empty
+                                                ),
+                                                child: notes[i].category.icon != null && notes[i].category.icon.isNotEmpty
+                                                    ? Image.asset(
+                                                  "icons/${notes[i].category.icon}.png",
+                                                  scale: 4,
+                                                  color: Colors.white,
+                                                )
+                                                    : Container(
+                                                  width: 35,
+                                                  height: 35,
+                                                  child: Center(
+                                                    child: Icon(
+                                                      Icons.notifications,
+                                                      color: Colors.white,
+                                                      size: 30,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
-                                              Image.asset(
-                                                "icons/${notes[i].category.icon}.png",
-                                                scale: 4,
-                                                color: Colors.white,
-                                              )
                                             ],
                                           ),
                                           SizedBox(width: 12),
@@ -210,6 +224,14 @@ class MainScreen extends StatelessWidget {
                                           ),
                                           Text(
                                             DateFormat("dd/MM/yyyy").format(notes[i].date),
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: Theme.of(context).colorScheme.secondary,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                          Text(
+                                            DateFormat("HH:mm").format(notes[i].date),
                                             style: TextStyle(
                                               fontSize: 14,
                                               color: Theme.of(context).colorScheme.secondary,

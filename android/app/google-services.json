@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:669782400052:android:6e6ba3fddf543cb54efe61",
         "android_client_info": {
-          "package_name": "com.example.flutter_app3"
+          "package_name": "com.example.RemindAll"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "669782400052-ipvmid156ppcqjjtmemh3pvpg30elq9r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.flutter_app3",
+            "package_name": "com.example.RemindAll",
             "certificate_hash": "2a76dcdb0f03aa69a32d40be37988dc4f11e2b4a"
           }
         },

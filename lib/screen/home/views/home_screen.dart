@@ -2,12 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app3/screen/home/blocs/get_note_bloc.dart';
+import 'package:RemindAll/screen/home/blocs/get_note_bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_app3/components/add_notes.dart';
-import 'package:flutter_app3/components/blocs/create_category_bloc/create_category_bloc.dart';
+import 'package:RemindAll/components/add_notes.dart';
+import 'package:RemindAll/components/blocs/create_category_bloc/create_category_bloc.dart';
 import 'package:note_repository/note_repository.dart';
-import 'package:flutter_app3/components/blocs/create_note_bloc/create_note_bloc.dart';
+import 'package:RemindAll/components/blocs/create_note_bloc/create_note_bloc.dart';
 
 import '../../../components/blocs/get_categories_bloc/get_categories_bloc.dart';
 import '../../event/event.dart';

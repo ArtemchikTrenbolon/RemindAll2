@@ -1,6 +1,6 @@
 // import 'package:flutter/cupertino.dart';
 // import 'package:flutter/material.dart';
-// import 'package:flutter_app3/theme/theme_provider.dart';
+// import 'package:RemindAll/theme/theme_provider.dart';
 // import 'package:google_fonts/google_fonts.dart';
 // import 'package:provider/provider.dart';
 //

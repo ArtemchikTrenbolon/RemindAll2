@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app3/components/my_button.dart';
-import 'package:flutter_app3/components/my_textfiled.dart';
-import 'package:flutter_app3/services/auth_service.dart';
+import 'package:RemindAll/components/my_button.dart';
+import 'package:RemindAll/components/my_textfiled.dart';
+import 'package:RemindAll/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
