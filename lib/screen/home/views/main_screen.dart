@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:RemindAll/components/user_profile.dart';
@@ -18,6 +19,8 @@ class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     note.sort((a, b) => b.date.compareTo(a.date));
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userName = currentUser?.displayName ?? 'User';
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
@@ -65,7 +68,7 @@ class MainScreen extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "Danil",
+                            "User",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,

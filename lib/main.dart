@@ -33,6 +33,7 @@ void main() async {
   // Initialize Firebase with platform options
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  Bloc.observer = SimpleBlocObserver();
   // Request notification permission
   var notificationStatus = await Permission.notification.request();
   if (notificationStatus.isDenied || notificationStatus.isPermanentlyDenied) {
